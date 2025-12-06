@@ -5,14 +5,15 @@
  * Each habit shows with score up/down buttons
  */
 
+/* eslint-disable import/extensions */
 import {
   parseHabitsFromStates,
   sortHabits,
   getMotivation,
   getFrequencyCounts,
-} from "./habitica-habits-list-card/utils";
+} from "./habitica-habits-list-card/utils.js";
 
-import { styles } from "./habitica-habits-list-card/styles";
+import { styles } from "./habitica-habits-list-card/styles.js";
 
 import {
   renderHeader,
@@ -20,12 +21,13 @@ import {
   renderMotivation,
   renderStats,
   renderHabitsList,
-} from "./habitica-habits-list-card/components";
+} from "./habitica-habits-list-card/components.js";
 
 import {
   renderCreateDialog,
   handleCreateHabitSubmit,
-} from "./habitica-habits-list-card/create-dialog";
+} from "./habitica-habits-list-card/create-dialog.js";
+/* eslint-enable import/extensions */
 
 class HabiticaHabitsListCard extends HTMLElement {
   constructor() {
@@ -78,7 +80,11 @@ class HabiticaHabitsListCard extends HTMLElement {
     const habits = parseHabitsFromStates(this._hass, this._filter);
 
     // Sort habits
-    this._habits = sortHabits(habits, this.config.sort_by, this.config.sort_direction);
+    this._habits = sortHabits(
+      habits,
+      this.config.sort_by,
+      this.config.sort_direction
+    );
   }
 
   handleScoreUp(_habitId, entityId) {
@@ -124,7 +130,10 @@ class HabiticaHabitsListCard extends HTMLElement {
     event.preventDefault();
 
     try {
-      const habitName = await handleCreateHabitSubmit(this._hass, this.shadowRoot);
+      const habitName = await handleCreateHabitSubmit(
+        this._hass,
+        this.shadowRoot
+      );
       this.closeCreateDialog();
 
       // Show success message
@@ -157,7 +166,7 @@ class HabiticaHabitsListCard extends HTMLElement {
       <ha-card>
         ${renderHeader(this.config.title, this._habits.length)}
 
-        ${this.config.show_filter ? renderFilterBar(this._filter) : ''}
+        ${this.config.show_filter ? renderFilterBar(this._filter) : ""}
 
         ${renderMotivation(this._motivation)}
 
@@ -168,7 +177,7 @@ class HabiticaHabitsListCard extends HTMLElement {
         </div>
       </ha-card>
 
-      ${this._showCreateDialog ? renderCreateDialog() : ''}
+      ${this._showCreateDialog ? renderCreateDialog() : ""}
     `;
 
     // Restore scroll position after re-render
