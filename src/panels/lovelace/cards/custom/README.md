@@ -8,18 +8,39 @@ This is a **standalone custom card** that doesn't require building the entire Ho
 
 ## Files
 
-- `habitica-habits-list-card.js` - Complete habits list card (auto-discovers all habits with full features)
+### Main File
+
+- `habitica-habits-list-card.js` - Main card file (this is the only file you need to add to Home Assistant resources)
+
+### Module Files (Auto-loaded)
+
+The following files are automatically imported by the main file:
+
+- `habitica-habits-list-card/utils.js` - Helper functions and utilities
+- `habitica-habits-list-card/styles.js` - CSS styles
+- `habitica-habits-list-card/components.js` - UI component templates
+- `habitica-habits-list-card/create-dialog.js` - Create habit dialog logic
 
 ## Installation for Users
 
 ### Method 1: Manual Installation
 
-1. Copy the file to your Home Assistant `config/www/` directory:
-   - `habitica-habits-list-card.js`
+1. Copy **all files and folders** to your Home Assistant `config/www/` directory:
 
-2. Add resource in Home Assistant:
+   ```
+   www/
+   ├── habitica-habits-list-card.js
+   └── habitica-habits-list-card/
+       ├── utils.js
+       ├── styles.js
+       ├── components.js
+       └── create-dialog.js
+   ```
+
+2. Add **only the main file** as a resource in Home Assistant:
    - Settings → Dashboards → Resources → Add Resource
    - Add `/local/habitica-habits-list-card.js` (JavaScript Module)
+   - The other files will be automatically loaded via ES6 imports
 
 3. Add card to dashboard:
    ```yaml
@@ -80,17 +101,37 @@ Values are also color-coded by frequency for visual consistency.
 
 ### Why Standalone?
 
-This card is implemented as a standalone JavaScript file rather than a built-in TypeScript component because:
+This card is implemented as standalone JavaScript files rather than a built-in TypeScript component because:
 
 1. **Easier distribution** - Users can install without rebuilding frontend
 2. **Faster development** - No build process needed
 3. **HACS compatible** - Can be distributed through community store
 4. **No dependencies** - Works with any Home Assistant version
 
+### Modular Architecture
+
+The card is split into logical modules for better maintainability:
+
+- **`utils.js`** - Pure functions for data processing and utilities
+- **`styles.js`** - All CSS styles in one place
+- **`components.js`** - Template functions for rendering UI sections
+- **`create-dialog.js`** - Isolated create habit dialog logic
+- **Main file** - Orchestrates everything together
+
+Benefits:
+
+- ✅ Easy to find and modify specific features
+- ✅ Better code organization
+- ✅ Smaller, more focused files
+- ✅ Still just **one resource** to add in Home Assistant
+
 ### Modifying the Card
 
-1. Edit `habitica-habits-list-card.js`
-2. Copy to `config/www/` in your test instance
+1. Edit the relevant module file:
+   - UI changes → `components.js` or `styles.js`
+   - Logic changes → `utils.js` or main file
+   - Dialog changes → `create-dialog.js`
+2. Copy **all files** to `config/www/` in your test instance
 3. Hard refresh browser (Ctrl+F5 or Cmd+Shift+R) to see changes
 4. No build process required!
 
